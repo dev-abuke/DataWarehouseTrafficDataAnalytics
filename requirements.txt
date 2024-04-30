@@ -1,6 +1,7 @@
 matplotlib
 nltk
-pandas
+pandas==2.1.4
 sqlalchemy
 python-dotenv
 logger
+psycopg2
