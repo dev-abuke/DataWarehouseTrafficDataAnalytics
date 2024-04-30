@@ -7,6 +7,7 @@ class DataExtractor():
     
     def __init__(self, file_path: str)->None:
         try:
+            # os.chdir("..")
             print("Initialized data extractor object")
             self.file_path = file_path
             # self.logger=logger()
