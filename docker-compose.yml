@@ -11,9 +11,9 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
 
-  airflow:
+  airflow-webserver:
     image: apache/airflow:2.1.0
-    command: webserver 
+    command: webserver
     environment:
       - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://dbuser:dbpassword@postgres/dbname
       - AIRFLOW__CORE__EXECUTOR=LocalExecutor
@@ -25,10 +25,25 @@ services:
       - ./dags:/opt/airflow/dags
       - ./logs:/opt/airflow/logs
       - ./plugins:/opt/airflow/plugins
+
+  airflow-scheduler:
+    image: apache/airflow:2.1.0
+    command: scheduler
+    environment:
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://dbuser:dbpassword@postgres/dbname
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+    depends_on:
+      - postgres
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./plugins:/opt/airflow/plugins
+
   redis:
     image: redis:latest
     ports:
       - "6379:6379"
+
   dbt:
     image: ghcr.io/dbt-labs/dbt-core:1.7.13
     environment:
