@@ -3,3 +3,4 @@ nltk
 pandas
 sqlalchemy
 python-dotenv
+logger
