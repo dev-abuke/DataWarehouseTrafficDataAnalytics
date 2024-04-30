@@ -1,3 +1,5 @@
 matplotlib
 nltk
 pandas
+sqlalchemy
+dotenv
