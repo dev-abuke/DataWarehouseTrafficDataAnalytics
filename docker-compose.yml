@@ -1,24 +1,11 @@
 version: '3.8'
 services:
-  postgres:
-    image: postgres:13
-    environment:
-      POSTGRES_USER: dbuser
-      POSTGRES_PASSWORD: dbpassword
-      POSTGRES_DB: dbname
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-
   airflow-webserver:
     image: apache/airflow:2.1.0
     command: webserver
     environment:
-      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://dbuser:dbpassword@postgres/dbname
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:hello@host.docker.internal:5434/traffic_data
       - AIRFLOW__CORE__EXECUTOR=LocalExecutor
-    depends_on:
-      - postgres
     ports:
       - "8080:8080"
     volumes:
@@ -30,10 +17,8 @@ services:
     image: apache/airflow:2.1.0
     command: scheduler
     environment:
-      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://dbuser:dbpassword@postgres/dbname
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:hello@host.docker.internal:5434/traffic_data
       - AIRFLOW__CORE__EXECUTOR=LocalExecutor
-    depends_on:
-      - postgres
     volumes:
       - ./dags:/opt/airflow/dags
       - ./logs:/opt/airflow/logs
@@ -50,21 +35,17 @@ services:
       DBT_PROFILES_DIR: /usr/app/profiles
     volumes:
       - ./dbt:/usr/app
-    depends_on:
-      - postgres
 
   redash:
     image: redash/redash
     ports:
       - "5000:5000"
     depends_on:
-      - postgres
       - redis
     environment:
-      REDASH_DATABASE_URL: postgresql://dbuser:dbpassword@postgres/dbname
+      REDASH_DATABASE_URL: postgresql+psycopg2://postgres:hello@localhost:5434/traffic_data
     volumes:
       - redash-data:/opt/redash
 
 volumes:
-  postgres-data:
   redash-data:
