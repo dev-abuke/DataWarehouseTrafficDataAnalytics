@@ -47,6 +47,7 @@ class DatabaseLoader:
             self.engine = create_engine(self.connection_url)
             self.connection = self.engine.connect()
             print("Connected to the database.")
+            return self.connection
         except Exception as e:
             print(f"Error connecting to the database: {str(e)}")
 
@@ -73,9 +74,19 @@ class DatabaseLoader:
 
     def load_data_to_table(self, df: pd.DataFrame, table_name: str):
 
-        try:
-            df.to_sql(name=table_name, con=self.connection, if_exists='append', index=False)
+        print("THE func in db_conn_loader is called and conn URL :: ", self.connection_url)
+        
+        df.columns=df.columns.str.replace(' ','')
 
+        df.dropna(inplace=True)
+
+        if(table_name == 'trajectory_data'):
+            print('INSIDE TRAJECTORY DATA IF')
+            df = df.head(30000)
+
+        try:
+            with self.connect() as connect:
+                df.to_sql(name=table_name, con=connect, if_exists='append', index=False, chunksize=400000)
         except Exception as e:
             print(f"Error while inserting to table: {e}")  
             sys.exit(e)
