@@ -25,6 +25,8 @@ services:
       - ./dags:/opt/airflow/dags
       - ./logs:/opt/airflow/logs
       - ./plugins:/opt/airflow/plugins
+      - ./utils:/opt/airflow/utils
+      - ./data:/opt/airflow/data
 
   redis:
     image: redis:latest
