@@ -12,12 +12,12 @@ class DataExtractor():
             # os.chdir("..")
             print("Initialized data extractor object")
             self.file_name = file_name
-            self.df_track = None
-            self.df_trajectory = None
             # self.logger=logger()
             # self.logger.info('Data extractor object Initialized')
         except:
             pass
+    def get_file_name(self):
+        return self.file_name
     
     def get_columns_and_rows(self) -> tuple:
         """
@@ -73,16 +73,14 @@ class DataExtractor():
             # add the matrix rows to trajectory_info
             trajectory_info = trajectory_info + trajectory_matrix
 
-        self.df_track = pd.DataFrame(data=track_info, columns=track_cols)
+        df_track = pd.DataFrame(data=track_info, columns=track_cols)
 
-        self.df_trajectory = pd.DataFrame(data=trajectory_info, columns=trajectory_cols)
+        df_trajectory = pd.DataFrame(data=trajectory_info, columns=trajectory_cols)
 
-        return self.df_track, self.df_trajectory
-    def save_to_csv(self) -> tuple:
         track_file_name = 'automobile_track'
         trajectory_file_name = 'automobile_trajectory'
         
-        self.df_track.to_csv(f'data/{track_file_name}.csv', index=False)
-        self.df_trajectory.to_csv(f'data/{trajectory_file_name}.csv', index=False)
-        
-        return track_file_name, trajectory_file_name
+        df_track.to_csv(f'data/{track_file_name}.csv', index=False)
+        df_trajectory.to_csv(f'data/{trajectory_file_name}.csv', index=False)
+
+        return df_track, df_trajectory, track_file_name, trajectory_file_name
