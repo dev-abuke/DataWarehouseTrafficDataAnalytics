@@ -5,28 +5,27 @@ from datetime import datetime, timedelta
 import pandas as pd
 from sqlalchemy import create_engine
 
-def load_csv_to_db():
-    # Database connection
-    print("################# The Directory is: ", os.getcwd(), " hello hello")
-    # self.connection_url = f"postgresql+psycopg2://{self.username}:{self.password}@{self.host}:{self.port}/{self.database}"
-    # engine = create_engine('postgresql+psycopg2://postgres:hello@localhost:5434/traffic_data')
-    # # Paths to CSV files
-    # track_data_path = '../data/automobile_track.csv'
-    # trajectory_data_path = '../data/automobile_trajectory.csv'
+print("THE CURRENT DIRECTORY IS",os.getcwd())  
 
-    # # Load data into DataFrame
-    # track_data = pd.read_csv(track_data_path)
-    # trajectory_data = pd.read_csv(trajectory_data_path)
+from utils.data_cleaner import DataExtractor
 
-    # # Load data into PostgreSQL
-    # track_data.to_sql('track_data', con=engine, if_exists='replace', index=False)
-    # trajectory_data.to_sql('trajectory_data', con=engine, if_exists='replace', index=False)
+extractor = DataExtractor(file_name='20181024_d1_0830_0900.csv')
 
-    # print("Data loaded successfully into PostgreSQL")
+def extract_data():
+
+    df_track, df_trajectory = extractor.extract_clean_data()
+    
+    print(f"EXTRACTION : DONE EXTRACTING AND CLEANING DATA\nTRACKS: {df_track.shape} : TRAJECTORIES: {df_trajectory.shape}")
+
+def save_to_csv():
+
+    track_file_name, trajectory_file_name = extractor.save_to_csv()
+
+    print(f"Data loaded to {track_file_name} and {trajectory_file_name}")
 
 # Define the DAG
 dag = DAG(
-    'load_automobile_data',
+    'load_traffic_data',
     default_args={
         'owner': 'airflow',
         'depends_on_past': False,
@@ -42,8 +41,17 @@ dag = DAG(
 )
 
 # Define the task
-load_data_task = PythonOperator(
-    task_id='load_data_to_db',
-    python_callable=load_csv_to_db,
+extract_data_task = PythonOperator(
+    task_id='extract_data_from_raw_csv',
+    python_callable=extract_data,
     dag=dag,
 )
+# Define the task
+save_to_csv_task = PythonOperator(
+    task_id='save_data_extracted_to_csv',
+    python_callable=save_to_csv,
+    dag=dag,
+)
+
+# Define the pipeline 
+extract_data_task >> save_to_csv_task
