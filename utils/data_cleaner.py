@@ -41,7 +41,7 @@ class DataExtractor():
             sys.exit(1)
     
     def get_lines(self):
-        with open(f"data/{self.file_path}", 'r', buffering=100000000) as file:
+        with open(f"data/{self.file_name}", 'r', buffering=100000000) as file:
             return file.readlines()
     
     def extract_clean_data(self):
