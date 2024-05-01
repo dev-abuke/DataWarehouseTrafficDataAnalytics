@@ -1,7 +1,7 @@
 import csv
 from itertools import islice
 import os
-from logger import logger
+# from logger import logger
 import sys
 import pandas as pd
 import os
