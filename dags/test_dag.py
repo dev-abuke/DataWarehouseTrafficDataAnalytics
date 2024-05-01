@@ -1,11 +1,16 @@
+from airflow.operators.python_operator import PythonOperator
 from airflow import DAG
 import os
-from airflow.operators.python_operator import PythonOperator
+import sys
 from datetime import datetime, timedelta
 import pandas as pd
 from sqlalchemy import create_engine
 
 print("THE CURRENT DIRECTORY IS",os.getcwd())  
+
+sys.path.append(f'./utils')
+sys.path.append(f'./data')
+sys.path.insert(0,os.path.abspath(os.path.dirname(__file__)))
 
 from utils.data_cleaner import DataExtractor
 
