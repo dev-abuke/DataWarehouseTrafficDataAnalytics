@@ -6,6 +6,7 @@ services:
     environment:
       - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:hello@host.docker.internal:5434/traffic_data
       - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - PYTHONPATH=/opt/airflow/dags:/opt/airflow/utils:$PYTHONPATH
     ports:
       - "8080:8080"
     volumes:
@@ -21,6 +22,7 @@ services:
     environment:
       - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:hello@host.docker.internal:5434/traffic_data
       - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - PYTHONPATH=/opt/airflow/dags:/opt/airflow/utils:$PYTHONPATH
     volumes:
       - ./dags:/opt/airflow/dags
       - ./logs:/opt/airflow/logs
