@@ -76,3 +76,11 @@ class DataExtractor():
         df_trajectory = pd.DataFrame(data=trajectory_info, columns=trajectory_cols)
 
         return df_track, df_trajectory
+    def save_to_csv(self, df_track: pd.DataFrame, df_trajectory: pd.DataFrame) -> tuple:
+        track_file_name = 'automobile_track.csv'
+        trajectory_file_name = 'automobile_trajectory.csv'
+        
+        df_track.to_csv(f'data/{track_file_name}', index=False)
+        df_trajectory.to_csv(f'data/{trajectory_file_name}', index=False)
+        
+        return track_file_name, trajectory_file_name
