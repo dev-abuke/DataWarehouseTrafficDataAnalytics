@@ -34,13 +34,16 @@ services:
     image: redis:latest
     ports:
       - "6379:6379"
-
+      
   dbt:
     image: ghcr.io/dbt-labs/dbt-core:1.7.13
-    environment:
-      DBT_PROFILES_DIR: /usr/app/profiles
     volumes:
-      - ./dbt:/usr/app
+      - ./dbt:/dbt
+    working_dir: /dbt
+    environment:
+      DBT_PROFILES_DIR: /dbt/profiles
+      DBT_TARGET: dev
+    command: dbt init my_dbt
 
   redash:
     image: redash/redash

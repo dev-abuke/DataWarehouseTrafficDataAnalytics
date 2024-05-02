@@ -5,3 +5,4 @@ sqlalchemy
 python-dotenv
 logger
 psycopg2
+dbt-postgres

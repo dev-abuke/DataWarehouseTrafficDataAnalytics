@@ -1,0 +1,12 @@
+traffic_dbt:
+  outputs:
+    dev:
+      dbname: traffic_data
+      host: 172.20.10.2
+      pass: hello
+      port: 5434
+      schema: public
+      threads: 1
+      type: postgres
+      user: postgres
+  target: dev
