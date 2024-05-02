@@ -33,7 +33,7 @@ models:
         description: "The type of vehicle one of the 6 types of vehicles. These are Car, Taxi, Bus, Medium Vehicle, Heavy Vehicle, Motorcycle."
         tests:
           - not_null
-      - name: average_speed
+      - name: avg_speed
         description: "Average speed over the hour."
         tests:
           - not_null
@@ -68,6 +68,10 @@ models:
           - not_null
       - name: lat_acc
         description: "Latitude acceleration of the data point."
+        tests:
+          - not_null
+      - name: speed
+        description: "Speed of the data point."
         tests:
           - not_null
           
