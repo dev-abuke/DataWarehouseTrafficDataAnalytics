@@ -5,6 +5,6 @@ select
     avg(lon_acc) as avg_longitudinal_acceleration,
     avg(lat_acc) as avg_lateral_acceleration
 from
-    {{ ref('trajectory_data') }}
+    trajectory_data
 group by
     track_id

@@ -5,7 +5,7 @@ select
     max(speed) as max_speed,
     min(speed) as min_speed
 from
-    {{ ref('trajectory_data') }}
+    trajectory_data
 group by
     hour
 order by

@@ -11,8 +11,8 @@ with base_data as (
     traj.lon_acc,
     traj.lat_acc,
     traj.time
-  from {{ ref('track_data') }} td
-  join {{ ref('trajectory_data') }} traj on td.track_id = traj.track_id
+  from track_data td
+  join trajectory_data traj on td.track_id = traj.track_id
 ),
 
 aggregated_metrics as (

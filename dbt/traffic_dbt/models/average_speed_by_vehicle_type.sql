@@ -3,6 +3,6 @@ select
     type,
     avg(speed) as average_speed
 from
-    {{ ref('trajectory_data') }}
+    trajectory_data
 group by
     type

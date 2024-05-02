@@ -1,7 +1,7 @@
 traffic_dbt:
   outputs:
     dev:
-      dbname: traffic_data
+      dbname: traffic_data_dbt
       host: localhost
       pass: hello
       port: 5434
