@@ -1,0 +1,135 @@
+version: 2
+
+models:
+  - name: speed_analysis
+    description: "Aggregates average, maximum, and minimum speeds by hour from trajectory_data."
+    columns:
+      - name: hour
+        description: "Hourly interval of recorded speeds."
+        tests:
+          - not_null
+          - unique
+      - name: average_speed
+        description: "Average speed calculated over the hour."
+        tests:
+          - not_null
+      - name: max_speed
+        description: "Maximum speed observed during the hour."
+        tests:
+          - not_null
+      - name: min_speed
+        description: "Minimum speed observed during the hour."
+        tests:
+          - not_null
+  - name: track_data
+    description: "All the available data from track_data."
+    columns:
+      - name: track_id
+        description: "The primary key for this table"
+        tests:
+          - unique
+          - not_null
+      - name: type
+        description: "The type of vehicle one of the 6 types of vehicles. These are Car, Taxi, Bus, Medium Vehicle, Heavy Vehicle, Motorcycle."
+        tests:
+          - not_null
+      - name: average_speed
+        description: "Average speed over the hour."
+        tests:
+          - not_null
+      - name: traveled_d
+        description: "The distance traveled in meters."
+        tests:
+          - not_null
+
+  - name: trajectory_data
+    description: "All the available data from trajectory_data."
+    columns:
+      - name: track_id
+        description: "The primary key for this table"
+        tests:
+          - unique
+          - not_null
+      - name: lat
+        description: "Latitude of the data point."
+        tests:
+          - not_null
+      - name: lon
+        description: "Longitude of the data point."
+        tests:
+          - not_null
+      - name: time
+        description: "Time of the data point."
+        tests:
+          - not_null
+      - name: lon_acc
+        description: "Longitude acceleration of the data point."
+        tests:
+          - not_null
+      - name: lat_acc
+        description: "Latitude acceleration of the data point."
+        tests:
+          - not_null
+          
+  - name: enriched_track_trajectory
+    description: "Combines track and trajectory data to provide enriched insights into vehicle movements."
+    columns:
+      - name: track_id
+        description: "Unique identifier for each track."
+        tests:
+          - not_null
+          - unique
+      - name: sum_distance
+        description: "Total distance traveled by the vehicle."
+        tests:
+          - not_null
+
+  # - name: distance_type_analysis
+  #   description: "Summarizes total traveled distance by vehicle type."
+  #   columns:
+  #     - name: type
+  #       description: "Type of vehicle or travel."
+  #       tests:
+  #         - not_null
+  #         - unique
+  #     - name: total_distance
+  #       description: "Total distance traveled by vehicle type."
+  #       tests:
+  #         - not_null
+
+  # - name: traffic_patterns
+  #   description: "Analyzes traffic patterns by vehicle type and hour, joined with trajectory data."
+  #   columns:
+  #     - name: type
+  #       description: "Type of vehicle involved."
+  #       tests:
+  #         - not_null
+  #     - name: hour
+  #       description: "Hourly intervals for traffic data collection."
+  #       tests:
+  #         - not_null
+  #         - unique
+  #     - name: avg_speed
+  #       description: "Average speed of vehicles per type per hour."
+  #       tests:
+  #         - not_null
+  #     - name: count_vehicles
+  #       description: "Count of vehicles per type per hour."
+  #       tests:
+  #         - not_null
+
+  # - name: geospatial_distribution
+  #   description: "Examines the geographic distribution of data points."
+  #   columns:
+  #     - name: lat
+  #       description: "Latitude of the data point."
+  #       tests:
+  #         - not_null
+  #     - name: lon
+  #       description: "Longitude of the data point."
+  #       tests:
+  #         - not_null
+  #     - name: data_points
+  #       description: "Number of data points at each geographic coordinate."
+  #       tests:
+  #         - not_null
