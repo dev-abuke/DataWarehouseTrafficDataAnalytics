@@ -19,21 +19,21 @@ aggregated_metrics as (
   select
     track_id,
     type,
-    sum(total_distance) as sum_distance,
-    avg(track_avg_speed) as avg_speed,
-    max(instant_speed) as max_speed,
-    min(instant_speed) as min_speed,
-    avg(lon_acc) as avg_longitudinal_acc,
-    avg(lat_acc) as avg_lateral_acc,
-    max(lon_acc) as max_longitudinal_acc,
-    max(lat_acc) as max_lateral_acc,
-    min(lon_acc) as min_longitudinal_acc,
-    min(lat_acc) as min_lateral_acc
+    Round((sum(Cast(total_distance as numeric)) / 1000), 2) as total_distance_km,
+    Round(avg(track_avg_speed), 2) as avg_speed_kmh,
+    Round(min(instant_speed), 2) as min_speed_kmh,
+    Round(max(instant_speed), 2) as max_speed_kmh,
+    Round(avg(lon_acc), 2) as avg_longitudinal_acc_ms2,
+    Round(avg(lat_acc), 2) as avg_lateral_acc_ms2,
+    Round(max(lon_acc), 2) as max_longitudinal_acc_ms2,
+    Round(max(lat_acc), 2) as max_lateral_acc_ms2,
+    Round(min(lon_acc), 2) as min_longitudinal_acc_ms2,
+    Round(min(lat_acc), 2) as min_lateral_acc_ms2
   from base_data
   group by track_id, type
 )
 
 select
   *,
-  sum_distance / nullif(avg_speed, 0) as estimated_travel_time_hours
+  total_distance_km / nullif(avg_speed_kmh, 0) as estimated_travel_time_hours
 from aggregated_metrics

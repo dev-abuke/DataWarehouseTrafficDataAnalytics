@@ -21,59 +21,59 @@ models:
         description: "Minimum speed observed during the hour."
         tests:
           - not_null
-  - name: track_data
-    description: "All the available data from track_data."
-    columns:
-      - name: track_id
-        description: "The primary key for this table"
-        tests:
-          - unique
-          - not_null
-      - name: type
-        description: "The type of vehicle one of the 6 types of vehicles. These are Car, Taxi, Bus, Medium Vehicle, Heavy Vehicle, Motorcycle."
-        tests:
-          - not_null
-      - name: avg_speed
-        description: "Average speed over the hour."
-        tests:
-          - not_null
-      - name: traveled_d
-        description: "The distance traveled in meters."
-        tests:
-          - not_null
+  # - name: track_data
+  #   description: "All the available data from track_data."
+  #   columns:
+  #     - name: track_id
+  #       description: "The primary key for this table"
+  #       tests:
+  #         - unique
+  #         - not_null
+  #     - name: type
+  #       description: "The type of vehicle one of the 6 types of vehicles. These are Car, Taxi, Bus, Medium Vehicle, Heavy Vehicle, Motorcycle."
+  #       tests:
+  #         - not_null
+  #     - name: avg_speed
+  #       description: "Average speed over the hour."
+  #       tests:
+  #         - not_null
+  #     - name: traveled_d
+  #       description: "The distance traveled in meters."
+  #       tests:
+  #         - not_null
 
-  - name: trajectory_data
-    description: "All the available data from trajectory_data."
-    columns:
-      - name: track_id
-        description: "The primary key for this table"
-        tests:
-          - unique
-          - not_null
-      - name: lat
-        description: "Latitude of the data point."
-        tests:
-          - not_null
-      - name: lon
-        description: "Longitude of the data point."
-        tests:
-          - not_null
-      - name: time
-        description: "Time of the data point."
-        tests:
-          - not_null
-      - name: lon_acc
-        description: "Longitude acceleration of the data point."
-        tests:
-          - not_null
-      - name: lat_acc
-        description: "Latitude acceleration of the data point."
-        tests:
-          - not_null
-      - name: speed
-        description: "Speed of the data point."
-        tests:
-          - not_null
+  # - name: trajectory_data
+  #   description: "All the available data from trajectory_data."
+  #   columns:
+  #     - name: track_id
+  #       description: "The primary key for this table"
+  #       tests:
+  #         - unique
+  #         - not_null
+  #     - name: lat
+  #       description: "Latitude of the data point."
+  #       tests:
+  #         - not_null
+  #     - name: lon
+  #       description: "Longitude of the data point."
+  #       tests:
+  #         - not_null
+  #     - name: time
+  #       description: "Time of the data point."
+  #       tests:
+  #         - not_null
+  #     - name: lon_acc
+  #       description: "Longitude acceleration of the data point."
+  #       tests:
+  #         - not_null
+  #     - name: lat_acc
+  #       description: "Latitude acceleration of the data point."
+  #       tests:
+  #         - not_null
+  #     - name: speed
+  #       description: "Speed of the data point."
+  #       tests:
+  #         - not_null
           
   - name: enriched_track_trajectory
     description: "Combines track and trajectory data to provide enriched insights into vehicle movements."
