@@ -20,15 +20,15 @@ aggregated_metrics as (
     track_id,
     type,
     Round((sum(Cast(total_distance as numeric)) / 1000), 2) as total_distance_km,
-    Round(avg(track_avg_speed), 2) as avg_speed_kmh,
-    Round(min(instant_speed), 2) as min_speed_kmh,
-    Round(max(instant_speed), 2) as max_speed_kmh,
-    Round(avg(lon_acc), 2) as avg_longitudinal_acc_ms2,
-    Round(avg(lat_acc), 2) as avg_lateral_acc_ms2,
-    Round(max(lon_acc), 2) as max_longitudinal_acc_ms2,
-    Round(max(lat_acc), 2) as max_lateral_acc_ms2,
-    Round(min(lon_acc), 2) as min_longitudinal_acc_ms2,
-    Round(min(lat_acc), 2) as min_lateral_acc_ms2
+    Round(avg(Cast(track_avg_speed as numeric)), 2) as avg_speed_kmh,
+    Round(min(Cast(instant_speed as numeric)), 2) as min_speed_kmh,
+    Round(max(Cast(instant_speed as numeric)), 2) as max_speed_kmh,
+    Round(avg(Cast(lon_acc as numeric)), 2) as avg_longitudinal_acc_ms2,
+    Round(avg(Cast(lat_acc as numeric)), 2) as avg_lateral_acc_ms2,
+    Round(max(Cast(lon_acc as numeric)), 2) as max_longitudinal_acc_ms2,
+    Round(max(Cast(lat_acc as numeric)), 2) as max_lateral_acc_ms2,
+    Round(min(Cast(lon_acc as numeric)), 2) as min_longitudinal_acc_ms2,
+    Round(min(Cast(lat_acc as numeric)), 2) as min_lateral_acc_ms2
   from base_data
   group by track_id, type
 )
