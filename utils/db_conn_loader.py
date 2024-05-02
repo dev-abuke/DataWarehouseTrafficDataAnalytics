@@ -91,6 +91,23 @@ class DatabaseLoader:
             print(f"Error while inserting to table: {e}")  
             sys.exit(e)
 
+    def create_db(self, db_name: str):
+        try:
+            with self.connect() as conn:
+                conn.execution_options(isolation_level="AUTOCOMMIT")
+                conn.execute(f"CREATE DATABASE IF NOT EXISTS {db_name}") 
+                self.connection_url = f"postgresql+psycopg2://{self.username}:{self.password}@{self.host}:{self.port}/{db_name}"
+                conn.close()
+        except Exception as e:
+            print(f"Error while inserting to table: {e}")  
+            sys.exit(e)
+
+    def set_connection_url_from_dbname(self, dbname: str):
+        self.database = dbname
+        self.connection_url = f"postgresql+psycopg2://{self.username}:{self.password}@{self.host}:{self.port}/{dbname}"
+
+        print("The new conn url is :: ", self.connection_url)
+
     def close(self):
         """
         Closes the connection to the database.
