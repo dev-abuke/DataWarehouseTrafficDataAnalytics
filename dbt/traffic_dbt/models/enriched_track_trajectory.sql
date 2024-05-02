@@ -35,5 +35,5 @@ aggregated_metrics as (
 
 select
   *,
-  total_distance_km / nullif(avg_speed_kmh, 0) as estimated_travel_time_hours
+  Round(Cast((total_distance_km / nullif(avg_speed_kmh, 0)) as numeric), 2) as estimated_travel_time_hours
 from aggregated_metrics
