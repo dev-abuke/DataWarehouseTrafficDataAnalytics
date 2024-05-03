@@ -34,16 +34,6 @@ services:
     image: redis:latest
     ports:
       - "6379:6379"
-      
-  dbt:
-    image: ghcr.io/dbt-labs/dbt-core:1.7.13
-    volumes:
-      - ./dbt/traffic_dbt:/dbt
-    working_dir: /dbt
-    environment:
-      DBT_PROFILES_DIR: /dbt
-      DBT_TARGET: dev
-    command: dbt run
 
   redash:
     image: redash/redash
@@ -55,6 +45,47 @@ services:
       REDASH_DATABASE_URL: postgresql+psycopg2://postgres:hello@localhost:5434/traffic_data
     volumes:
       - redash-data:/opt/redash
+
+  server:
+    image: redash/redash:10.0.0-b50363
+    command: server
+    depends_on:
+      - redis
+    ports:
+      - "5000:5000"  # Redash web interface
+    environment:
+      REDASH_WEB_WORKERS: 4
+      REDASH_LOG_LEVEL: "INFO"
+      PYTHONUNBUFFERED: 0
+      REDASH_REDIS_URL: "redis://redis:6379/0"
+      REDASH_DATABASE_URL: "postgresql://postgres:hello@host.docker.internal:5434/redash"
+      REDASH_COOKIE_SECRET: veryverysecret
+  scheduler:
+    image: redash/redash:10.0.0-b50363
+    command: scheduler
+    depends_on:
+      - server
+      - redis
+    environment:
+      REDASH_LOG_LEVEL: "INFO"
+      PYTHONUNBUFFERED: 0
+      REDASH_REDIS_URL: "redis://redis:6379/0"
+      REDASH_DATABASE_URL: "postgresql://postgres:hello@host.docker.internal:5434/redash"
+      QUEUES: "celery"
+      WORKERS_COUNT: 1
+  worker:
+    image: redash/redash:10.0.0-b50363
+    command: worker
+    depends_on:
+      - server
+      - redis
+    environment:
+      REDASH_LOG_LEVEL: "INFO"
+      PYTHONUNBUFFERED: 0
+      REDASH_REDIS_URL: "redis://redis:6379/0"
+      REDASH_DATABASE_URL: "postgresql://postgres:hello@host.docker.internal:5434/redash"
+      QUEUES: "*"
+      WORKERS_COUNT: 2
 
 volumes:
   redash-data:
