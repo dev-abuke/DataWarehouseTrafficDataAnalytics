@@ -35,19 +35,8 @@ services:
     ports:
       - "6379:6379"
 
-  redash:
-    image: redash/redash
-    ports:
-      - "5000:5000"
-    depends_on:
-      - redis
-    environment:
-      REDASH_DATABASE_URL: postgresql+psycopg2://postgres:hello@localhost:5434/traffic_data
-    volumes:
-      - redash-data:/opt/redash
-
   server:
-    image: redash/redash:10.0.0-b50363
+    image: redash/redash
     command: server
     depends_on:
       - redis
@@ -61,7 +50,7 @@ services:
       REDASH_DATABASE_URL: "postgresql://postgres:hello@host.docker.internal:5434/redash"
       REDASH_COOKIE_SECRET: veryverysecret
   scheduler:
-    image: redash/redash:10.0.0-b50363
+    image: redash/redash
     command: scheduler
     depends_on:
       - server
@@ -74,7 +63,7 @@ services:
       QUEUES: "celery"
       WORKERS_COUNT: 1
   worker:
-    image: redash/redash:10.0.0-b50363
+    image: redash/redash
     command: worker
     depends_on:
       - server
