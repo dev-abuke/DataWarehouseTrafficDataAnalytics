@@ -51,11 +51,17 @@ def load_trajectory_data_to_db(ti):
 
     print("TRAJECTORY DATA LOADED TO DATABASE")
 
-def create_table():
-    print("CREATE TABLE")
+def create_db_func():
+    loader.create_db('traffic_data')
 
-def clean_up():
-    print("CREATE TABLE")
+def clean_up(ti):
+    print("STARTING TO CLEAN UP")
+
+    trajectory_file_name = ti.xcom_pull(key="trajectory_file_name",task_ids='extract_data_from_raw_csv')
+    track_file_name = ti.xcom_pull(key="track_file_name",task_ids='extract_data_from_raw_csv')
+
+    os.remove(f'data/{track_file_name}')
+    os.remove(f'data/{trajectory_file_name}')
 
 # Define the DAG
 dag = DAG(
@@ -92,9 +98,9 @@ load_trajectory_to_db = PythonOperator(
     dag=dag,
 )
     
-create_db_table = PythonOperator(
+create_db = PythonOperator(
     task_id='create_table',
-    python_callable = create_table,
+    python_callable = create_db_func,
     dag=dag,
 )
 
@@ -105,4 +111,4 @@ clean_up_data = PythonOperator(
 )
 
 # Define the pipeline 
-[extract_data_task, create_db_table] >> load_track_to_db >> load_trajectory_to_db >> clean_up_data
+[extract_data_task, create_db] >> load_track_to_db >> load_trajectory_to_db >> clean_up_data
