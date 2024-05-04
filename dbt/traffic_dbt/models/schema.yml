@@ -1,0 +1,210 @@
+version: 2
+
+models:
+  - name: speed_analysis
+    description: "Aggregates average, maximum, and minimum speeds by hour from trajectory_data."
+    columns:
+      - name: hour
+        description: "Hourly interval of recorded speeds."
+        tests:
+          - not_null
+          - unique
+      - name: average_speed
+        description: "Average speed calculated over the hour."
+        tests:
+          - not_null
+      - name: max_speed
+        description: "Maximum speed observed during the hour."
+        tests:
+          - not_null
+      - name: min_speed
+        description: "Minimum speed observed during the hour."
+        tests:
+          - not_null
+  # - name: track_data
+  #   description: "All the available data from track_data."
+  #   columns:
+  #     - name: track_id
+  #       description: "The primary key for this table"
+  #       tests:
+  #         - unique
+  #         - not_null
+  #     - name: type
+  #       description: "The type of vehicle one of the 6 types of vehicles. These are Car, Taxi, Bus, Medium Vehicle, Heavy Vehicle, Motorcycle."
+  #       tests:
+  #         - not_null
+  #     - name: avg_speed
+  #       description: "Average speed over the hour."
+  #       tests:
+  #         - not_null
+  #     - name: traveled_d
+  #       description: "The distance traveled in meters."
+  #       tests:
+  #         - not_null
+
+  # - name: trajectory_data
+  #   description: "All the available data from trajectory_data."
+  #   columns:
+  #     - name: track_id
+  #       description: "The primary key for this table"
+  #       tests:
+  #         - unique
+  #         - not_null
+  #     - name: lat
+  #       description: "Latitude of the data point."
+  #       tests:
+  #         - not_null
+  #     - name: lon
+  #       description: "Longitude of the data point."
+  #       tests:
+  #         - not_null
+  #     - name: time
+  #       description: "Time of the data point."
+  #       tests:
+  #         - not_null
+  #     - name: lon_acc
+  #       description: "Longitude acceleration of the data point."
+  #       tests:
+  #         - not_null
+  #     - name: lat_acc
+  #       description: "Latitude acceleration of the data point."
+  #       tests:
+  #         - not_null
+  #     - name: speed
+  #       description: "Speed of the data point."
+  #       tests:
+  #         - not_null
+          
+  - name: enriched_track_trajectory
+    description: "Combines track and trajectory data to provide enriched insights into vehicle movements."
+    columns:
+      - name: track_id
+        description: "Unique identifier for each track."
+        tests:
+          - not_null
+          - unique
+      - name: sum_distance
+        description: "Total distance traveled by the vehicle."
+        tests:
+          - not_null
+
+  # ######################
+  - name: vehicle_performance
+    description: "Analyzes average speeds and accelerations to gauge vehicle performance under various conditions."
+    columns:
+      - name: track_id
+        description: "Unique identifier for each vehicle track."
+        tests:
+          - not_null
+          - unique
+      - name: type
+        description: "Type of vehicle."
+        tests:
+          - not_null
+      - name: avg_speed
+        description: "Average speed of the vehicle over its recorded tracks."
+        tests:
+          - not_null
+      - name: avg_longitudinal_acceleration
+        description: "Average longitudinal acceleration across all tracks."
+        tests:
+          - not_null
+      - name: avg_lateral_acceleration
+        description: "Average lateral acceleration across all tracks."
+        tests:
+          - not_null
+
+  # - name: daily_traffic_metrics
+  #   description: "Aggregates key traffic metrics daily to monitor trends and changes over time."
+  #   columns:
+  #     - name: date
+  #       description: "The date for which data is aggregated."
+  #       tests:
+  #         - not_null
+  #         - unique
+  #     - name: type
+  #       description: "Type of vehicle aggregated."
+  #       tests:
+  #         - not_null
+  #     - name: unique_vehicles
+  #       description: "Number of unique vehicles recorded on this date."
+  #       tests:
+  #         - not_null
+  #     - name: total_distance_traveled
+  #       description: "Total distance traveled by all vehicles on this date."
+  #       tests:
+  #         - not_null
+  #     - name: average_speed
+  #       description: "Average speed of all vehicles on this date."
+  #       tests:
+  #         - not_null
+
+  - name: vehicle_efficiency
+    description: "Calculates the efficiency of vehicle operations based on distances and speeds."
+    columns:
+      - name: track_id
+        description: "Unique identifier for the vehicle track."
+        tests:
+          - not_null
+          - unique
+      - name: type
+        description: "Vehicle type."
+        tests:
+          - not_null
+      - name: sum_distance
+        description: "Sum of distances traveled by the vehicle."
+        tests:
+          - not_null
+      - name: avg_speed
+        description: "Average speed calculated across all tracks."
+        tests:
+          - not_null
+      - name: efficiency_score
+        description: "Calculated efficiency score based on speed and distance."
+        tests:
+          - not_null
+
+  - name: spacial_analysis
+    description: "Analyzes spatial distribution of vehicle data points to identify density and pattern."
+    columns:
+      - name: lat
+        description: "Latitude coordinate of the data point."
+        tests:
+          - not_null
+      - name: lon
+        description: "Longitude coordinate of the data point."
+        tests:
+          - not_null
+      - name: count_points
+        description: "Number of data points at this geographic location."
+        tests:
+          - not_null
+      - name: avg_speed
+        description: "Average speed at this location."
+        tests:
+          - not_null
+
+  # - name: safety_compliance_monitoring
+  #   description: "Monitors safety and compliance based on speed and acceleration thresholds."
+  #   columns:
+  #     - name: track_id
+  #       description: "Unique track identifier for the data record."
+  #       tests:
+  #         - not_null
+  #         - unique
+  #     - name: max_longitudinal_acceleration
+  #       description: "Maximum longitudinal acceleration recorded for the track."
+  #       tests:
+  #         - not_null
+  #     - name: max_lateral_acceleration
+  #       description: "Maximum lateral acceleration recorded for the track."
+  #       tests:
+  #         - not_null
+  #     - name: max_speed
+  #       description: "Maximum speed recorded for the track."
+  #       tests:
+  #         - not_null
+  #     - name: speed_compliance_check
+  #       description: "Indicates whether the speed is within compliance limits."
+  #       tests:
+  #         - not_null

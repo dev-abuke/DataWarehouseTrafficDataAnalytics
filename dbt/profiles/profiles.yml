@@ -1,0 +1,12 @@
+default:
+  outputs:
+    dev:
+      type: postgres
+      threads: 1
+      host: '172.20.10.2'  # Name of your PostgreSQL service in Docker Compose
+      port: 5434
+      user: postgres
+      pass: hello
+      dbname: traffic_data
+      schema: public
+  target: dev
