@@ -46,12 +46,14 @@ Explore the repository to understand the project structure and components. Refer
     git clone https://github.com/dev-abuke/DataWarehouseTrafficDataAnalytics.git
     ```
 
+2. **Set Up Python Environment:**
+     
+
     Install the required dependencies:
+   
     ```bash
     pip install -r requirements.txt
     ```
-
-2. **Set Up Python Environment:**
 
     ```bash
     python -m venv your_env_name
